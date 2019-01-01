@@ -1,4 +1,4 @@
-package org.github.unicon.unicon;
+package org.github.unicon;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
