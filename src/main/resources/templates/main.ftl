@@ -5,14 +5,16 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Main</title>
-    <#--<link rel="stylesheet" type="text/css" href="<@spring.url '/css/style.css'/>"/>-->
 </head>
 <body>
-<h1>Basic base</h1>
 
-<#foreach type in types>
-    <a href="<@spring.url '/convert-${type}'/>">Convert ${type}</a>
-</#foreach>
+<h1>Simple conversions</h1>
+
+<ul>
+    <#foreach type in types>
+        <li><a href="<@spring.url '/convert/simple?type=${type}'/>">Convert ${type}</a></li>
+    </#foreach>
+</ul>
 
 </body>
 </html>
