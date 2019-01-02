@@ -5,12 +5,12 @@ import org.github.unicon.conv.measure.ScalableMeasureUnit;
 import java.math.BigDecimal;
 
 public enum WeightUnit implements ScalableMeasureUnit<WeightUnit> {
-    GRAM("g", BigDecimal.ONE, "Gram"),
-    KILOGRAM("kg", BigDecimal.valueOf(1_000), "Kilogram"),
+    GRAM("gram", BigDecimal.ONE, "Gram"),
+    KILOGRAM("kilogram", BigDecimal.valueOf(1_000), "Kilogram"),
     TONNE("tonne", BigDecimal.valueOf(1_000_000), "Tonne"),
     CENTNER("centner", BigDecimal.valueOf(1_00_000), "Centener"),
     CARAT("carat", BigDecimal.valueOf(0.02), "Carat"),
-    POUND("p", BigDecimal.valueOf(453.59237), "Pound"),
+    POUND("pound", BigDecimal.valueOf(453.59237), "Pound"),
     STONE("stone", BigDecimal.valueOf(6350.29318), "Stone"),
     OUNCE("ounce", BigDecimal.valueOf(28.349523125), "Stone"),
     ;
