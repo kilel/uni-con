@@ -1,10 +1,10 @@
 package org.github.unicon.conv.measure.impl;
 
-import org.github.unicon.conv.measure.MeasureUnit;
+import org.github.unicon.conv.measure.ScalableMeasureUnit;
 
 import java.math.BigDecimal;
 
-public enum LengthUnit implements MeasureUnit {
+public enum LengthUnit implements ScalableMeasureUnit<LengthUnit> {
     METER("m", BigDecimal.ONE, "Meter"),
     KILOMETER("km", BigDecimal.valueOf(1000), "Kilometer"),
     FOOT("foot", BigDecimal.valueOf(0.305), "Foot"),

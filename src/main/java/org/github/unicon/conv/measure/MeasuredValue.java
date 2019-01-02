@@ -1,7 +1,6 @@
 package org.github.unicon.conv.measure;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class MeasuredValue<T extends MeasureUnit> {
     private final BigDecimal value;
@@ -26,8 +25,7 @@ public class MeasuredValue<T extends MeasureUnit> {
         }
 
         return new MeasuredValue<>(
-            value.divide(unit.getMultiplier(), RoundingMode.UNNECESSARY)
-                .multiply(targetUnit.getMultiplier()),
+            unit.convert(value, targetUnit),
             targetUnit
         );
     }

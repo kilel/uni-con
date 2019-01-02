@@ -1,10 +1,10 @@
 package org.github.unicon.conv.measure.impl;
 
-import org.github.unicon.conv.measure.MeasureUnit;
+import org.github.unicon.conv.measure.ScalableMeasureUnit;
 
 import java.math.BigDecimal;
 
-public enum WeightUnit implements MeasureUnit {
+public enum WeightUnit implements ScalableMeasureUnit<WeightUnit> {
     GRAM("g", BigDecimal.ONE, "Gram"),
     KILOGRAM("kg", BigDecimal.valueOf(1_000), "Kilogram"),
     TONNE("tonne", BigDecimal.valueOf(1_000_000), "Tonne"),
