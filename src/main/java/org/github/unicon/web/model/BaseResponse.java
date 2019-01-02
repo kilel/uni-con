@@ -1,15 +1,15 @@
 package org.github.unicon.web.model;
 
 public class BaseResponse {
-    private boolean isOk = true;
+    private ResultStatus status = ResultStatus.OK;
     private String message;
 
-    public boolean isOk() {
-        return isOk;
+    public ResultStatus getStatus() {
+        return status;
     }
 
-    public void setOk(boolean ok) {
-        isOk = ok;
+    public void setStatus(ResultStatus status) {
+        this.status = status;
     }
 
     public String getMessage() {

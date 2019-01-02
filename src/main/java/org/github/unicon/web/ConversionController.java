@@ -1,9 +1,10 @@
 package org.github.unicon.web;
 
-import org.github.unicon.conv.model.MeasureType;
-import org.github.unicon.conv.model.MeasureUnit;
-import org.github.unicon.conv.model.MeasuredValue;
+import org.github.unicon.conv.measure.MeasureType;
+import org.github.unicon.conv.measure.MeasureUnit;
+import org.github.unicon.conv.measure.MeasuredValue;
 import org.github.unicon.web.model.MeasureConvertResponse;
+import org.github.unicon.web.model.MeasureUnitDto;
 import org.github.unicon.web.model.MeasuresListResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,12 @@ public class ConversionController {
     @GetMapping(path = "/measure-list")
     @ResponseBody
     public MeasuresListResponse listMeasureTypes() {
-        final Map<MeasureType, MeasureUnit[]> measureUnits = Arrays.stream(MeasureType.values())
+        final Map<MeasureType, MeasureUnitDto[]> measureUnits = Arrays.stream(MeasureType.values())
             .collect(Collectors.toMap(
                 x -> x,
-                MeasureType::getUnits
+                x -> Arrays.stream(x.getUnits())
+                    .map(MeasureUnitDto::build)
+                    .toArray(MeasureUnitDto[]::new)
             ));
 
         final MeasuresListResponse response = new MeasuresListResponse();
@@ -41,11 +44,6 @@ public class ConversionController {
         final MeasureUnit targetUnit = type.getUnit(targetUnitName);
 
         final MeasuredValue<MeasureUnit> result = new MeasuredValue<>(value, sourceUnit).to(targetUnit);
-
-        final MeasureConvertResponse response = new MeasureConvertResponse();
-        response.setType(type);
-        response.setUnit(targetUnit);
-        response.setValue(result.getValue());
-        return response;
+        return MeasureConvertResponse.build(type, result);
     }
 }

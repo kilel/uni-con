@@ -1,13 +1,13 @@
 package org.github.unicon.web.model;
 
-import org.github.unicon.conv.model.MeasureType;
-import org.github.unicon.conv.model.MeasureUnit;
+import org.github.unicon.conv.measure.MeasureType;
+import org.github.unicon.conv.measure.MeasureUnit;
 
 import java.util.Map;
 
 public class MeasuresListResponse extends BaseResponse {
     private MeasureType[] types;
-    private Map<MeasureType, MeasureUnit[]> measureUnits;
+    private Map<MeasureType, MeasureUnitDto[]> measureUnits;
 
     public MeasureType[] getTypes() {
         return types;
@@ -17,11 +17,11 @@ public class MeasuresListResponse extends BaseResponse {
         this.types = types;
     }
 
-    public Map<MeasureType, MeasureUnit[]> getMeasureUnits() {
+    public Map<MeasureType, MeasureUnitDto[]> getMeasureUnits() {
         return measureUnits;
     }
 
-    public void setMeasureUnits(Map<MeasureType, MeasureUnit[]> measureUnits) {
+    public void setMeasureUnits(Map<MeasureType, MeasureUnitDto[]> measureUnits) {
         this.measureUnits = measureUnits;
     }
 }

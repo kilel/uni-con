@@ -1,4 +1,7 @@
-package org.github.unicon.conv.model;
+package org.github.unicon.conv.measure;
+
+import org.github.unicon.conv.measure.impl.LengthUnit;
+import org.github.unicon.conv.measure.impl.WeightUnit;
 
 import java.util.Arrays;
 
@@ -19,7 +22,7 @@ public enum MeasureType {
 
     public MeasureUnit getUnit(String name) {
         return Arrays.stream(units)
-            .filter(x -> x.getName().equalsIgnoreCase(name))
+            .filter(x -> x.getCode().equalsIgnoreCase(name))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException(String.format(
                 "Unknown unit [%s] for measure [%s]",

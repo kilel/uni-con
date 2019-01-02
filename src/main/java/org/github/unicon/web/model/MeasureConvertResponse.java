@@ -1,14 +1,15 @@
 package org.github.unicon.web.model;
 
-import org.github.unicon.conv.model.MeasureUnit;
-import org.github.unicon.conv.model.MeasureType;
+import org.github.unicon.conv.measure.MeasureType;
+import org.github.unicon.conv.measure.MeasureUnit;
+import org.github.unicon.conv.measure.MeasuredValue;
 
 import java.math.BigDecimal;
 
 public class MeasureConvertResponse extends BaseResponse {
     private MeasureType type;
     private BigDecimal value;
-    private MeasureUnit unit;
+    private MeasureUnitDto unit;
 
     public MeasureType getType() {
         return type;
@@ -26,11 +27,19 @@ public class MeasureConvertResponse extends BaseResponse {
         this.value = value;
     }
 
-    public MeasureUnit getUnit() {
+    public MeasureUnitDto getUnit() {
         return unit;
     }
 
-    public void setUnit(MeasureUnit unit) {
+    public void setUnit(MeasureUnitDto unit) {
         this.unit = unit;
+    }
+
+    public static MeasureConvertResponse build(MeasureType type, MeasuredValue<MeasureUnit> result) {
+        final MeasureConvertResponse response = new MeasureConvertResponse();
+        response.setType(type);
+        response.setUnit(MeasureUnitDto.build(result.getUnit()));
+        response.setValue(result.getValue());
+        return response;
     }
 }

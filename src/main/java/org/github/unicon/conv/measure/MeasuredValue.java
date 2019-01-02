@@ -1,4 +1,4 @@
-package org.github.unicon.conv.model;
+package org.github.unicon.conv.measure;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
