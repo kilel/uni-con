@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/convert")
+@RequestMapping(path = "/api/convert")
 public class ConversionController {
 
     @GetMapping(path = "/measure-list")
