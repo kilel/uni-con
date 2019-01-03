@@ -1,20 +1,17 @@
 <#import "/spring.ftl" as spring/>
+<#import "utils.ftl" as utils />
 
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta charset="UTF-8"/>
     <title>Main</title>
+    <@utils.libs />
 </head>
 <body>
 
-<h1>Simple conversions</h1>
-
-<ul>
-    <#foreach type in types>
-        <li><a href="<@spring.url '/convert/simple?type=${type}'/>">Convert ${type}</a></li>
-    </#foreach>
-</ul>
+<@utils.unit_pages />
+<@utils.date_pages />
 
 </body>
 </html>
