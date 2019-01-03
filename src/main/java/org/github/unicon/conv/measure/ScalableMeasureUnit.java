@@ -10,7 +10,7 @@ public interface ScalableMeasureUnit<T extends ScalableMeasureUnit<T>> extends M
     @Override
     default BigDecimal convert(BigDecimal value, T target) {
         return value
-            .divide(getMultiplier(), RoundingMode.UNNECESSARY)
+            .divide(getMultiplier(), RoundingMode.FLOOR)
             .multiply(target.getMultiplier());
     }
 }
