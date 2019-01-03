@@ -9,3 +9,7 @@
     margin: 0.5em;
 
 }
+
+.measure-block input {
+    width: 20em;
+}

@@ -1,12 +1,12 @@
 <#import "/spring.ftl" as spring/>
+<#import "utils.ftl" as utils />
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Converter</title>
-    <link rel="stylesheet" type="text/css" href="<@spring.url '/web/base.css'/>"/>
-    <script src="<@spring.url '/web/jq.js'/>"></script>
+    <title>${currentType} converter</title>
+    <@utils.libs />
     <script>
         $( document ).ready(function() {
             $( "#convert-button" ).click(function() {
@@ -49,12 +49,8 @@
     <input id="convert-button" type="button" value="Convert"/>
 </div>
 
-<h1>Simple conversions</h1>
+<@utils.unit_pages />
+<@utils.date_pages />
 
-<ul>
-    <#foreach type in types>
-        <li><a href="<@spring.url '/convert/simple?type=${type}'/>">Convert ${type}</a></li>
-    </#foreach>
-</ul>
 </body>
 </html>
