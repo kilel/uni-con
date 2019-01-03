@@ -85,12 +85,13 @@ public class ConversionController {
     public ValueResponse<String> dateTointerval(@RequestParam("source") String sourceDate,
                                                 @RequestParam("interval") BigDecimal interval,
                                                 @RequestParam("durationUnit") String targetUnitName) {
+        final DurationUnit targetUnit = (DurationUnit) MeasureType.DURATION.getUnit(targetUnitName);
+
         final Date result;
         try {
             result = dateService.dateAfter(
                 DATE_FORMAT.get().parse(sourceDate),
-                new MeasuredValue<>(interval,
-                    (DurationUnit) MeasureType.DURATION.getUnit(targetUnitName))
+                new MeasuredValue<>(interval, targetUnit)
             );
 
             return ValueResponse.build(DATE_FORMAT.get().format(result));

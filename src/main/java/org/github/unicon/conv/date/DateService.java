@@ -7,17 +7,18 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static org.github.unicon.conv.measure.impl.DurationUnit.*;
+
 @Service
 public class DateService {
 
     public MeasuredValue<DurationUnit> durationBetween(Date source, Date target, DurationUnit unit) {
-        return new MeasuredValue<>(
-            DurationUnit.MILLISECOND.convert(BigDecimal.valueOf(target.getTime() - source.getTime()), unit),
-            unit
-        );
+        final BigDecimal datesDeltaMs = BigDecimal.valueOf(target.getTime() - source.getTime());
+        return new MeasuredValue<>(datesDeltaMs, MILLISECOND).to(unit);
     }
 
     public Date dateAfter(Date source, MeasuredValue<DurationUnit> value) {
-        return new Date(source.getTime() + value.to(DurationUnit.MILLISECOND).getValue().longValue());
+        final MeasuredValue<DurationUnit> valueMs = value.to(MILLISECOND);
+        return new Date(source.getTime() + valueMs.getValue().longValue());
     }
 }

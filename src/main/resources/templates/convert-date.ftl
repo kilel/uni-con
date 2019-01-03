@@ -28,7 +28,7 @@
                     'json'
                 ).fail(function (data) {
                     var result = data.responseJSON.message;
-                    alert('Failed to get response! ' + result)
+                    alert('Failed to get response! ' + result);
                 });
             });
 
@@ -51,7 +51,7 @@
                     'json'
                 ).fail(function (data) {
                     var result = data.responseJSON.message;
-                    alert('Failed to get response! ' + result)
+                    alert('Failed to get response! ' + result);
                 });
             });
         });
