@@ -1,16 +1,12 @@
 package org.github.unicon.conv.measure;
 
-import org.github.unicon.UniconApplicationTests;
-import org.github.unicon.conv.measure.impl.PressureUnit;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
 import static org.github.unicon.conv.measure.impl.PressureUnit.*;
 
-public class PressureUnitTest extends UniconApplicationTests {
-    private static final double DELTA = 0.001;
+public class PressureUnitTest extends AbstractMeasureUnitTests {
 
     @Test
     public void simpleTest() {
@@ -31,6 +27,7 @@ public class PressureUnitTest extends UniconApplicationTests {
         assertConvert(PASCAL, 0.00001, BAR, 0.0000000001);
         assertConvert(BAR, 0.000001, MMHG, 0.00075006157585);
         assertConvert(MMHG, 0.000001, PASCAL, 0.000133322387);
+        assertConvert(MMHG, new BigDecimal("0.000000000000100001"), PASCAL, new BigDecimal("1.333237206388741579e-11"));
     }
 
     @Test
@@ -46,19 +43,4 @@ public class PressureUnitTest extends UniconApplicationTests {
         assertConvert(BAR, -20, PASCAL, -2000000);
         assertConvert(BAR, -15.5, MMHG, -11625.95);
     }
-
-    private void assertConvert(PressureUnit source, double value, PressureUnit target, double expected) {
-        final BigDecimal result = source.convert(BigDecimal.valueOf(value), target);
-        Assert.assertEquals(expected, result.doubleValue(),  Math.abs(expected) * DELTA);
-    }
-    private void assertConvert(PressureUnit source, BigDecimal value, PressureUnit target, BigDecimal expected) {
-        final BigDecimal result = source.convert(value, target);
-        Assert.assertTrue(checkNotDifferMuch(expected, result, DELTA));
-    }
-
-    private boolean checkNotDifferMuch(BigDecimal expected, BigDecimal result, double delta) {
-        BigDecimal diff = expected.multiply(BigDecimal.valueOf(delta));
-        return (expected.subtract(diff)).compareTo(result) < 0 && (expected.add(diff)).compareTo(result) > 0;
-    }
-
 }

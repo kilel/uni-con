@@ -1,16 +1,12 @@
 package org.github.unicon.conv.measure;
 
-import org.github.unicon.UniconApplicationTests;
-import org.github.unicon.conv.measure.impl.TemperatureUnit;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
 import static org.github.unicon.conv.measure.impl.TemperatureUnit.*;
 
-public class TemperatureUnitTest extends UniconApplicationTests {
-    private static final double DELTA = 0.001;
+public class TemperatureUnitTest extends AbstractMeasureUnitTests {
 
     @Test
     public void simpleTest() {
@@ -31,6 +27,7 @@ public class TemperatureUnitTest extends UniconApplicationTests {
         assertConvert(CELSIUS, 0.01000001, KELVIN, 273.16000001);
         assertConvert(KELVIN, 0.0001, FAHRENHEIT, -459.66982);
         assertConvert(FAHRENHEIT, 0.0001, CELSIUS, -17.7777222);
+        assertConvert(FAHRENHEIT, new BigDecimal("0.00000016511000154"), CELSIUS, new BigDecimal("-17.777777686050001194"));
     }
 
     @Test
@@ -46,19 +43,4 @@ public class TemperatureUnitTest extends UniconApplicationTests {
         assertConvert(KELVIN, -1879, FAHRENHEIT, -3841.87);
         assertConvert(FAHRENHEIT, -1541, CELSIUS, -873.8889);
     }
-
-    private void assertConvert(TemperatureUnit source, double value, TemperatureUnit target, double expected) {
-        final BigDecimal result = source.convert(BigDecimal.valueOf(value), target);
-        Assert.assertEquals(expected, result.doubleValue(),  Math.abs(expected) * DELTA);
-    }
-    private void assertConvert(TemperatureUnit source, BigDecimal value, TemperatureUnit target, BigDecimal expected) {
-        final BigDecimal result = source.convert(value, target);
-        Assert.assertTrue(checkNotDifferMuch(expected, result, DELTA));
-    }
-
-    private boolean checkNotDifferMuch(BigDecimal expected, BigDecimal result, double delta) {
-        BigDecimal diff = expected.multiply(BigDecimal.valueOf(delta));
-        return (expected.subtract(diff)).compareTo(result) < 0 && (expected.add(diff)).compareTo(result) > 0;
-    }
-
 }

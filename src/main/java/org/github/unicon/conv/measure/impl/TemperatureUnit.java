@@ -45,7 +45,7 @@ public enum TemperatureUnit implements MeasureUnit<TemperatureUnit> {
                 return value
                     .subtract(BigDecimal.valueOf(32))
                     .multiply(BigDecimal.valueOf(5))
-                    .divide(BigDecimal.valueOf(9), MathContext.DECIMAL32);
+                    .divide(BigDecimal.valueOf(9), MathContext.DECIMAL64);
             default:
                 throw new IllegalArgumentException(String.format("Convert [%s] to C is not supported", getCode()));
         }

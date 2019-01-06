@@ -1,16 +1,12 @@
 package org.github.unicon.conv.measure;
 
-import org.github.unicon.UniconApplicationTests;
-import org.github.unicon.conv.measure.impl.LengthUnit;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
 import static org.github.unicon.conv.measure.impl.LengthUnit.*;
 
-public class LengthUnitTest extends UniconApplicationTests {
-    private static final double DELTA = 0.001;
+public class LengthUnitTest extends AbstractMeasureUnitTests {
 
     @Test
     public void simpleTest() {
@@ -46,20 +42,6 @@ public class LengthUnitTest extends UniconApplicationTests {
         assertConvert(MILE, -20, FOOT, -105600);
         assertConvert(FOOT, -1879, KILOMETER, -0.5727192);
         assertConvert(KILOMETER, -15.5, METER, -15500);
-    }
-
-    private void assertConvert(LengthUnit source, double value, LengthUnit target, double expected) {
-        final BigDecimal result = source.convert(BigDecimal.valueOf(value), target);
-        Assert.assertEquals(expected, result.doubleValue(),  Math.abs(expected) * DELTA);
-    }
-    private void assertConvert(LengthUnit source, BigDecimal value, LengthUnit target, BigDecimal expected) {
-        final BigDecimal result = source.convert(value, target);
-        Assert.assertTrue(checkNotDifferMuch(expected, result, DELTA));
-    }
-
-    private boolean checkNotDifferMuch(BigDecimal expected, BigDecimal result, double delta) {
-        BigDecimal diff = expected.multiply(BigDecimal.valueOf(delta));
-        return (expected.subtract(diff)).compareTo(result) < 0 && (expected.add(diff)).compareTo(result) > 0;
     }
 
 }
