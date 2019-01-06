@@ -5,6 +5,10 @@ import org.github.unicon.conv.measure.MeasureType;
 import org.github.unicon.conv.measure.MeasureUnit;
 import org.github.unicon.conv.measure.MeasuredValue;
 import org.github.unicon.conv.measure.impl.DurationUnit;
+import org.github.unicon.conv.text.EncodingType;
+import org.github.unicon.conv.text.EscapeType;
+import org.github.unicon.conv.text.HashType;
+import org.github.unicon.conv.text.TextService;
 import org.github.unicon.web.model.MeasureConvertResponse;
 import org.github.unicon.web.model.MeasureUnitDto;
 import org.github.unicon.web.model.MeasuresListResponse;
@@ -30,6 +34,9 @@ public class ConversionController {
 
     @Autowired
     private DateService dateService;
+
+    @Autowired
+    private TextService textService;
 
     @GetMapping(path = "/measure-list")
     @ResponseBody
@@ -63,7 +70,7 @@ public class ConversionController {
 
     @GetMapping(path = "/date/toInterval")
     @ResponseBody
-    public ValueResponse<BigDecimal> dateTointerval(@RequestParam("source") String sourceDate,
+    public ValueResponse<BigDecimal> dateToInterval(@RequestParam("source") String sourceDate,
                                                     @RequestParam("target") String targetDate,
                                                     @RequestParam("durationUnit") String targetUnitName) {
         final MeasuredValue<DurationUnit> result;
@@ -82,9 +89,9 @@ public class ConversionController {
 
     @GetMapping(path = "/date/toDate")
     @ResponseBody
-    public ValueResponse<String> dateTointerval(@RequestParam("source") String sourceDate,
-                                                @RequestParam("interval") BigDecimal interval,
-                                                @RequestParam("durationUnit") String targetUnitName) {
+    public ValueResponse<String> dateToDate(@RequestParam("source") String sourceDate,
+                                            @RequestParam("interval") BigDecimal interval,
+                                            @RequestParam("durationUnit") String targetUnitName) {
         final DurationUnit targetUnit = (DurationUnit) MeasureType.DURATION.getUnit(targetUnitName);
 
         final Date result;
@@ -98,5 +105,46 @@ public class ConversionController {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping(path = "/text/escape")
+    @ResponseBody
+    public ValueResponse<String> textEscape(@RequestParam("source") String source,
+                                            @RequestParam("type") String type) {
+        return ValueResponse.build(textService.escape(source, EscapeType.parse(type)));
+    }
+
+    @GetMapping(path = "/text/unescape")
+    @ResponseBody
+    public ValueResponse<String> textUnescape(@RequestParam("source") String source,
+                                              @RequestParam("type") String type) {
+        return ValueResponse.build(textService.unescape(source, EscapeType.parse(type)));
+    }
+
+    @GetMapping(path = "/text/encode")
+    @ResponseBody
+    public ValueResponse<String> textEncode(@RequestParam("source") String source,
+                                            @RequestParam("sourceType") String sourceType,
+                                            @RequestParam("targetType") String targetType) {
+        final EncodingType sourceEnc = EncodingType.parse(sourceType);
+        final EncodingType targetEnc = EncodingType.parse(targetType);
+
+        final byte[] data = textService.decode(source, sourceEnc);
+        return ValueResponse.build(textService.encode(data, targetEnc));
+    }
+
+    @GetMapping(path = "/text/hash")
+    @ResponseBody
+    public ValueResponse<String> textHash(@RequestParam("source") String source,
+                                          @RequestParam("encoding") String encodingCode,
+                                          @RequestParam("encodingTgt") String encodingTgtCode,
+                                          @RequestParam("hashType") String hashTypeCode) {
+        final EncodingType encoding = EncodingType.parse(encodingCode);
+        final EncodingType encodingTgt = EncodingType.parse(encodingTgtCode);
+        final HashType hashType = HashType.parse(hashTypeCode);
+
+        final byte[] data = textService.decode(source, encoding);
+        final byte[] hash = textService.hash(data, hashType);
+        return ValueResponse.build(textService.encode(hash, encodingTgt));
     }
 }
