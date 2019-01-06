@@ -3,6 +3,7 @@ package org.github.unicon.conv.measure.impl;
 import org.github.unicon.conv.measure.MeasureUnit;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 public enum TemperatureUnit implements MeasureUnit<TemperatureUnit> {
@@ -39,12 +40,12 @@ public enum TemperatureUnit implements MeasureUnit<TemperatureUnit> {
             case CELSIUS:
                 return value;
             case KELVIN:
-                return value.add(BigDecimal.valueOf(273.15));
+                return value.subtract(BigDecimal.valueOf(273.15));
             case FAHRENHEIT:
                 return value
                     .subtract(BigDecimal.valueOf(32))
                     .multiply(BigDecimal.valueOf(5))
-                    .divide(BigDecimal.valueOf(9), RoundingMode.FLOOR);
+                    .divide(BigDecimal.valueOf(9), MathContext.DECIMAL32);
             default:
                 throw new IllegalArgumentException(String.format("Convert [%s] to C is not supported", getCode()));
         }
@@ -55,7 +56,7 @@ public enum TemperatureUnit implements MeasureUnit<TemperatureUnit> {
             case CELSIUS:
                 return value;
             case KELVIN:
-                return value.subtract(BigDecimal.valueOf(273.15));
+                return value.add(BigDecimal.valueOf(273.15));
             case FAHRENHEIT:
                 return value
                     .multiply(BigDecimal.valueOf(9))

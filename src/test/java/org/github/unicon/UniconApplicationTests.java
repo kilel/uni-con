@@ -13,13 +13,7 @@ import java.math.BigDecimal;
 @SpringBootTest
 public class UniconApplicationTests {
 
-	@Test
-	public void contextLoads() {
-		final BigDecimal source = BigDecimal.valueOf(150);
-		final BigDecimal result = LengthUnit.METER.convert(source, LengthUnit.KILOMETER);
 
-//		Assert.assertEquals(BigDecimal.valueOf(0.150), result);
-	}
 
 }
 

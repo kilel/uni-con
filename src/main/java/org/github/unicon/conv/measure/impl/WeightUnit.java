@@ -9,7 +9,7 @@ public enum WeightUnit implements ScalableMeasureUnit<WeightUnit> {
     KILOGRAM("kilogram", BigDecimal.valueOf(1_000), "Kilogram"),
     TONNE("tonne", BigDecimal.valueOf(1_000_000), "Tonne"),
     CENTNER("centner", BigDecimal.valueOf(1_00_000), "Centener"),
-    CARAT("carat", BigDecimal.valueOf(0.02), "Carat"),
+    CARAT("carat", BigDecimal.valueOf(0.2), "Carat"),
     POUND("pound", BigDecimal.valueOf(453.59237), "Pound"),
     STONE("stone", BigDecimal.valueOf(6350.29318), "Stone"),
     OUNCE("ounce", BigDecimal.valueOf(28.349523125), "Stone"),
