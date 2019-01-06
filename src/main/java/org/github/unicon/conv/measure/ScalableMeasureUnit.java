@@ -1,6 +1,7 @@
 package org.github.unicon.conv.measure;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 public interface ScalableMeasureUnit<T extends ScalableMeasureUnit<T>> extends MeasureUnit<T> {
@@ -10,7 +11,8 @@ public interface ScalableMeasureUnit<T extends ScalableMeasureUnit<T>> extends M
     @Override
     default BigDecimal convert(BigDecimal value, T target) {
         return value
-            .divide(getMultiplier(), RoundingMode.FLOOR)
-            .multiply(target.getMultiplier());
+            .multiply(getMultiplier())
+            .divide(target.getMultiplier(), MathContext.DECIMAL64)
+                .stripTrailingZeros();
     }
 }

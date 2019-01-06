@@ -11,15 +11,7 @@ import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UniconApplicationTests {
-
-	@Test
-	public void contextLoads() {
-		final BigDecimal source = BigDecimal.valueOf(150);
-		final BigDecimal result = LengthUnit.METER.convert(source, LengthUnit.KILOMETER);
-
-//		Assert.assertEquals(BigDecimal.valueOf(0.150), result);
-	}
+public abstract class UniconApplicationTests {
 
 }
 
