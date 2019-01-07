@@ -63,7 +63,7 @@
 <div class="container">
     <div class="measure-block">
         <span>Source date: </span>
-        <input id="source-date" type="text" value="2018-31-12 13:55:02.255+0300"/>
+        <input id="source-date" type="text" value="2018-12-31 13:55:02.255+0300"/>
     </div>
     <div class="measure-block">
         <span>Target date: </span>
@@ -78,7 +78,7 @@
             </#foreach>
         </select>
     </div>
-    <input id="convert-to-interval" type="button" value="Build interval based on dates date based on interval"/>
+    <input id="convert-to-interval" type="button" value="Build interval based on dates"/>
     <input id="convert-to-date" type="button" value="Build target date based on interval"/>
 </div>
 

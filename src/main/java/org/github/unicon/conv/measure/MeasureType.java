@@ -3,6 +3,7 @@ package org.github.unicon.conv.measure;
 import org.github.unicon.conv.measure.impl.*;
 
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 public enum MeasureType {
     LENGTH(LengthUnit.values()),
