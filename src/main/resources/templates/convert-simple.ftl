@@ -51,6 +51,7 @@
 
 <@utils.unit_pages />
 <@utils.date_pages />
+<@utils.text_pages />
 
 </body>
 </html>

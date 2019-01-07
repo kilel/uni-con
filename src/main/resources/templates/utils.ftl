@@ -19,3 +19,12 @@
     <h1>Dates conversions</h1>
     <a href="<@spring.url '/convert/date'/>">Convert dates</a>
 </#macro>
+
+<#macro text_pages>
+    <h1>Text conversions</h1>
+    <ul>
+        <li><a href="<@spring.url '/convert/escape'/>">Escape/unescape</a></li>
+        <li><a href="<@spring.url '/convert/encode'/>">Encode/decode</a></li>
+        <li><a href="<@spring.url '/convert/hash'/>">Hash</a></li>
+    </ul>
+</#macro>
