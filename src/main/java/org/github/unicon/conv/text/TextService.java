@@ -1,9 +1,12 @@
 package org.github.unicon.conv.text;
 
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.text.StringEscapeUtils;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.*;
+import org.bouncycastle.util.BigIntegers;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -49,13 +52,13 @@ public class TextService {
             case PLAIN:
                 return new String(data);
             case BIN:
-                return new BigInteger(data).toString(2);
+                return new BigInteger(1, data).toString(2);
             case OCT:
-                return new BigInteger(data).toString(8);
+                return new BigInteger(1, data).toString(8);
             case DEC:
-                return new BigInteger(data).toString(10);
+                return new BigInteger(1, data).toString(10);
             case HEX:
-                return new BigInteger(data).toString(16);
+                return Hex.encodeHexString(data);
             case BASE32:
                 return new Base32().encodeAsString(data);
             case BASE64:
@@ -70,13 +73,17 @@ public class TextService {
             case PLAIN:
                 return data.getBytes();
             case BIN:
-                return new BigInteger(data, 2).toByteArray();
+                return BigIntegers.asUnsignedByteArray(new BigInteger(data, 2));
             case OCT:
-                return new BigInteger(data, 8).toByteArray();
+                return BigIntegers.asUnsignedByteArray(new BigInteger(data, 8));
             case DEC:
-                return new BigInteger(data, 10).toByteArray();
+                return BigIntegers.asUnsignedByteArray(new BigInteger(data, 10));
             case HEX:
-                return new BigInteger(data, 16).toByteArray();
+                try {
+                    return Hex.decodeHex(data);
+                } catch (DecoderException e) {
+                    throw new RuntimeException(e);
+                }
             case BASE32:
                 return new Base32().decode(data);
             case BASE64:
