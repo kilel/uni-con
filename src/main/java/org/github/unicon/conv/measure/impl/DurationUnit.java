@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import static java.util.concurrent.TimeUnit.*;
 
 public enum DurationUnit implements ScalableMeasureUnit<DurationUnit> {
-    NANOSECOND("second", "Nanosecond", NANOSECONDS, BigDecimal.ONE),
+    NANOSECOND("nanosecond", "Nanosecond", NANOSECONDS, BigDecimal.ONE),
     MICROSECOND("microsecond", "Microsecond", MICROSECONDS, NANOSECOND.multiplier.multiply(BigDecimal.valueOf(1000))),
     MILLISECOND("millisecond", "Millisecond", MILLISECONDS, MICROSECOND.multiplier.multiply(BigDecimal.valueOf(1000))),
     SECOND("second", "Second", SECONDS, MILLISECOND.multiplier.multiply(BigDecimal.valueOf(1000))),

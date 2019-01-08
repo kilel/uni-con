@@ -96,7 +96,7 @@ public class ConversionController {
 
         final Date result;
         try {
-            result = dateService.dateAfter(
+            result = dateService.dateShift(
                 DATE_FORMAT.get().parse(sourceDate),
                 new MeasuredValue<>(interval, targetUnit)
             );
