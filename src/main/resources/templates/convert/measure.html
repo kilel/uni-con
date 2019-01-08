@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="main.html :: common_html_head(~{::title})">
+    <title th:text="${currentType + ' converter'}">Some converter</title>
+
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<!-- header -->
+<div th:replace="main.html :: common_page_header"></div>
+
+<!-- main content -->
+<div role="main" class="container">
+    <h1 th:text="${'Convert ' + currentType}">Convert something</h1>
+
+    <div class="form-group row mx-2 mx-sm-0">
+        <label for="source-value">Source value</label>
+        <input id="source-value" class="form-control" type="text" placeholder="Source value..."/>
+    </div>
+    <div class="row mx-2 mx-sm-0">
+        <div class="form-group col-6 pl-0">
+            <label for="source-unit">Source unit</label>
+            <select id="source-unit" class="form-control mr-2">
+                <option th:each="unit : ${units}" th:text="${unit.getCode()}">Unit</option>
+            </select>
+        </div>
+        <div class="form-group col-6 pr-0">
+            <label for="target-unit">Target unit</label>
+            <select id="target-unit" class="form-control mr-2">
+                <option th:each="unit : ${units}" th:text="${unit.getCode()}">Unit</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row mx-2 mx-sm-0">
+        <label for="target-value">Converted value</label>
+        <input id="target-value" class="form-control" type="text" placeholder="Target value..."/>
+    </div>
+    <div class="form-group row mx-2 mx-sm-0">
+        <div class="col-2"></div>
+        <input id="convert-button" class="btn btn-primary form-control col-4 mx-2" type="button" value="Convert"/>
+        <input id="convert-back-button" class="btn btn-primary form-control col-4 mx-2" type="button"
+               value="Convert back"/>
+    </div>
+</div>
+
+<!-- footer -->
+<div th:replace="main.html :: common_page_footer(~{::script})">
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $("#convert-button").click(function () {
+                convert("source", "target");
+            });
+            $("#convert-back-button").click(function () {
+                convert("target", "source");
+            });
+        });
+
+        function convert(sourceKey, targetKey) {
+            var source = $("#" + sourceKey + "-unit").val();
+            var target = $("#" + targetKey + "-unit").val();
+            var value = $("#" + sourceKey + "-value").val();
+            $.get(
+                '[(@{/api/convert/measure})]',
+                {
+                    'type': '[(${currentType})]',
+                    'source': source,
+                    'target': target,
+                    'value': value
+                },
+                function (data) {
+                    console.log("got it!", data);
+                    var result = data.value;
+                    $("#" + targetKey + "-value").val(result);
+                },
+                'json'
+            );
+        }
+    </script>
+</div>
+</body>
+</html>

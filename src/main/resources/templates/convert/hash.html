@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="main.html :: common_html_head(~{::title})">
+    <title>Text hasher</title>
+
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<!-- header -->
+<div th:replace="main.html :: common_page_header"></div>
+
+<!-- main content -->
+<div role="main" class="container">
+    <h1>Calculate hash</h1>
+
+    <div class="form-group row mx-2 mx-sm-0">
+        <label for="source-value">Source data</label>
+        <textarea id="source-value" class="form-control" placeholder="Input text to hash..."></textarea>
+    </div>
+    <div class="row mx-2 mx-sm-0">
+        <div class="form-group col-6 pl-0">
+            <label for="encode-type">Source encoding</label>
+            <select id="encode-type" class="form-control">
+                <option th:each="encodeType : ${encodeTypes}" th:text="${encodeType.getCode()}">Encoding</option>
+            </select>
+        </div>
+        <div class="form-group col-6 pr-0">
+            <label for="encode-type-tgt">Target encoding</label>
+            <select id="encode-type-tgt" class="form-control">
+                <option th:each="encodeType : ${encodeTypes}" th:text="${encodeType.getCode()}">Encoding</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row mx-2 mx-sm-0">
+        <label for="hash-type">Hash type</label>
+        <select id="hash-type" class="form-control">
+            <option th:each="hashType : ${hashTypes}" th:text="${hashType.getCode()}">Hash type</option>
+        </select>
+    </div>
+    <div class="form-group row mx-2 mx-sm-0">
+        <label for="target-value">Hash value</label>
+        <input id="target-value" class="form-control" type="text" readonly="true"/>
+    </div>
+    <div class="form-group row mx-2 mx-sm-0">
+        <div class="col-3"></div>
+        <input id="hash-button" class="btn btn-primary form-control col-6 mx-2" type="button"
+               value="Calculate hash"/>
+    </div>
+</div>
+
+<!-- footer -->
+<div th:replace="main.html :: common_page_footer(~{::script})">
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $("#hash-button").click(function () {
+                hash();
+            });
+        });
+
+        function hash() {
+            $.get(
+                '[(@{/api/convert/text/hash})]',
+                {
+                    "source": $("#source-value").val(),
+                    "encoding": $("#encode-type").val(),
+                    "encodingTgt": $("#encode-type-tgt").val(),
+                    "hashType": $("#hash-type").val()
+                },
+                function (data) {
+                    console.log("got it!", data);
+                    var result = data.value;
+                    $("#target-value").val(result);
+                },
+                'json'
+            ).fail(function (data) {
+                var result = data.responseJSON.message;
+                alert('Failed to get response! ' + result);
+            });
+        }
+    </script>
+</div>
+
+</body>
+</html>
