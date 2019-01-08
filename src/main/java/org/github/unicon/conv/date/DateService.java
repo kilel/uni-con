@@ -17,7 +17,7 @@ public class DateService {
         return new MeasuredValue<>(datesDeltaMs, MILLISECOND).to(unit);
     }
 
-    public Date dateAfter(Date source, MeasuredValue<DurationUnit> value) {
+    public Date dateShift(Date source, MeasuredValue<DurationUnit> value) {
         final MeasuredValue<DurationUnit> valueMs = value.to(MILLISECOND);
         return new Date(source.getTime() + valueMs.getValue().longValue());
     }
