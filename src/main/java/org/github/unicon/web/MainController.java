@@ -14,14 +14,14 @@ public class MainController {
 
     @RequestMapping("/")
     public String main(Model model) {
-        model.addAttribute("measureTypes", MeasureType.values());
+        fillCommonModelFields(model);
         return "main";
     }
 
     @RequestMapping("/convert/measure")
     public String convertMeasure(Model model,
                                  @RequestParam("type") MeasureType type) {
-        model.addAttribute("measureTypes", MeasureType.values());
+        fillCommonModelFields(model);
         model.addAttribute("units", type.getUnits());
         model.addAttribute("currentType", type);
 
@@ -30,30 +30,34 @@ public class MainController {
 
     @RequestMapping("/convert/date")
     public String convertDate(Model model) {
-        model.addAttribute("measureTypes", MeasureType.values());
+        fillCommonModelFields(model);
         model.addAttribute("units", MeasureType.DURATION.getUnits());
         return "convert/date";
     }
 
     @RequestMapping("/convert/escape")
     public String convertEscape(Model model) {
-        model.addAttribute("measureTypes", MeasureType.values());
+        fillCommonModelFields(model);
         model.addAttribute("esTypes", EscapeType.values());
         return "convert/escape";
     }
 
     @RequestMapping("/convert/encode")
     public String convertEncode(Model model) {
-        model.addAttribute("measureTypes", MeasureType.values());
+        fillCommonModelFields(model);
         model.addAttribute("encodeTypes", EncodingType.values());
         return "convert/encode";
     }
 
     @RequestMapping("/convert/hash")
     public String convertHash(Model model) {
-        model.addAttribute("measureTypes", MeasureType.values());
+        fillCommonModelFields(model);
         model.addAttribute("encodeTypes", EncodingType.values());
         model.addAttribute("hashTypes", HashType.values());
         return "convert/hash";
+    }
+
+    private void fillCommonModelFields(Model model) {
+        model.addAttribute("measureTypes", MeasureType.values());
     }
 }
