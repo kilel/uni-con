@@ -93,6 +93,14 @@ public class TextService {
         }
     }
 
+    public String convert(String data, EncodingType source, EncodingType target) {
+        return encode(decode(data, source), target);
+    }
+
+    public byte[] convert(byte[] data, EncodingType source, EncodingType target) {
+        return decode(encode(data, source), target);
+    }
+
     public byte[] hash(byte[] data, HashType type) {
         Digest digest;
         switch (type) {
