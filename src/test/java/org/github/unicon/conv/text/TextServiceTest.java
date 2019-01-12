@@ -60,6 +60,19 @@ public class TextServiceTest extends UniconApplicationTests {
     }
 
     @Test
+    public void notSimpleEncodeTest() {
+            String data = "some test text абв";
+        Assert.assertEquals("163 157 155 145 40 164 145 163 164 40 164 145 170 164 40 320 260 320 261 320 262",
+                textService.convert(data, PLAIN, OCT_PER_BYTE));
+        Assert.assertEquals("115 111 109 101 32 116 101 115 116 32 116 101 120 116 32 208 176 208 177 208 178",
+                textService.convert(data, PLAIN, DEC_PER_BYTE));
+        Assert.assertEquals(data,
+                textService.convert("163 157 155 145 40 164 145 163 164 40 164 145 170 164 40 320 260 320 261 320 262", OCT_PER_BYTE, PLAIN));
+        Assert.assertEquals(data,
+                textService.convert("115 111 109 101 32 116 101 115 116 32 116 101 120 116 32 208 176 208 177 208 178", DEC_PER_BYTE, PLAIN));
+    }
+
+    @Test
     public void encodeTest() {
         String data = "111001101101111011011010110010100100000011101000110010101110011011101000010000001110100011001010111100001110100";
         String newData = textService.convert(data, BIN, DEC);
@@ -91,7 +104,7 @@ public class TextServiceTest extends UniconApplicationTests {
     }
 
     @Test
-    public  void simpleHashTest() {
+    public void simpleHashTest() {
         String data = "serdgsrtysrthgbxcv cv r5t";
         Assert.assertEquals("f6340d9534a3b87669c7abc5106370b4",
                 textService.encode(textService.hash(
@@ -128,5 +141,10 @@ public class TextServiceTest extends UniconApplicationTests {
         String anotheResultHex = textService.convert(resultBase32, BASE32, HEX);
 
         Assert.assertEquals(resultHex, anotheResultHex);
+    }
+
+    @Test
+    public void testTest() {
+        Assert.assertEquals("143", Integer.toOctalString('c'));
     }
 }
