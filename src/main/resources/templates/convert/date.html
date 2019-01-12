@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="main.html :: common_html_head(~{::title})">
+    <title>Date converter</title>
+
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+
+<!-- header -->
+<div th:replace="main.html :: common_page_header"></div>
+
+<!-- main content -->
+<div role="main" class="container">
+    <h1>Calculate interval between dates</h1>
+
+    <div class="row mx-2 mx-sm-0">
+        <div class="form-group col-6 pl-0">
+            <label for="source-date">Source date</label>
+            <input id="source-date" class="form-control" type="text" value="2018-12-31 13:55:02.255+0300"/>
+        </div>
+        <div class="form-group col-6 pr-0">
+            <label for="target-date">Target date</label>
+            <input id="target-date" class="form-control" type="text" value="2019-01-03 20:04:71.427+0300"/>
+        </div>
+    </div>
+    <div class="row mx-2 mx-sm-0">
+        <div class="form-group col-2 pl-0">
+            <label for="duration-unit">Interval unit</label>
+            <select id="duration-unit" class="form-control mr-2">
+                <option th:each="unit : ${units}" th:text="${unit.getCode()}">Unit</option>
+            </select>
+        </div>
+        <div class="form-group col pr-0">
+            <label for="duration-value">Interval</label>
+            <input id="duration-value" class="form-control" type="text"/>
+        </div>
+    </div>
+    <div class="form-group row mx-2 mx-sm-0">
+        <div class="col-3"></div>
+        <input id="convert-to-interval" class="btn btn-primary form-control col-6 mx-2" type="button"
+               value="Calculate"/>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h1>Calculate date with interval shift</h1>
+
+    <div class="form-group row mx-2 mx-sm-0">
+        <label for="source-date-2">Source date</label>
+        <input id="source-date-2" class="form-control" type="text" value="2018-31-12 13:55:02.255+0300"/>
+    </div>
+    <div class="row mx-2 mx-sm-0">
+        <div class="form-group col-2 pl-0">
+            <label for="duration-unit-2">Interval unit</label>
+            <select id="duration-unit-2" class="form-control mr-2">
+                <option th:each="unit : ${units}" th:text="${unit.getCode()}">Unit</option>
+            </select>
+        </div>
+        <div class="form-group col pr-0">
+            <label for="duration-value-2">Interval</label>
+            <input id="duration-value-2" class="form-control col" type="text" value="0"/>
+        </div>
+    </div>
+    <div class="form-group row mx-2 mx-sm-0">
+        <label for="target-date-2">Target date</label>
+        <input id="target-date-2" class="form-control" type="text"/>
+    </div>
+    <div class="form-group row mx-2 mx-sm-0">
+        <div class="col-3"></div>
+        <input id="convert-to-date" class="btn btn-primary form-control col-6 mx-2" type="button"
+               value="Calculate"/>
+    </div>
+</div>
+
+<!-- footer -->
+<div th:replace="main.html :: common_page_footer(~{::script})">
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $("#convert-to-interval").click(function () {
+                var source = $("#source-date").val();
+                var target = $("#target-date").val();
+                var intervalType = $("#duration-unit").val();
+                $.get(
+                    '[(@{/api/convert/date/toInterval})]',
+                    {
+                        "source": source,
+                        "target": target,
+                        "durationUnit": intervalType
+                    },
+                    function (data) {
+                        console.log("got it!", data);
+                        var result = data.value;
+                        $("#duration-value").val(result);
+                    },
+                    'json'
+                ).fail(function (data) {
+                    var result = data.responseJSON.message;
+                    alert('Failed to get response! ' + result);
+                });
+            });
+
+            $("#convert-to-date").click(function () {
+                var source = $("#source-date-2").val();
+                var value = $("#duration-value-2").val();
+                var intervalType = $("#duration-unit-2").val();
+                $.get(
+                    '[(@{/api/convert/date/toDate})]',
+                    {
+                        "source": source,
+                        "interval": value,
+                        "durationUnit": intervalType
+                    },
+                    function (data) {
+                        console.log("got it!", data);
+                        var result = data.value;
+                        $("#target-date-2").val(result);
+                    },
+                    'json'
+                ).fail(function (data) {
+                    var result = data.responseJSON.message;
+                    alert('Failed to get response! ' + result);
+                });
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>
