@@ -66,7 +66,7 @@ public class TextServiceTest extends UniconApplicationTests {
     public void encodeTest() {
         String data = "111001101101111011011010110010100100000011101000110010101110011011101000010000001110100011001010111100001110100";
         String newData = textService.encode(textService.decode(data, EncodingType.BIN), EncodingType.DEC);
-        Assert.assertEquals("111001101101111011011010110010100100000011101000110010101110011011101000010000001110100011001010111100001110100",
+        Assert.assertEquals(data,
                 textService.encode(textService.decode(newData, EncodingType.DEC), EncodingType.BIN));
     }
 
@@ -75,6 +75,22 @@ public class TextServiceTest extends UniconApplicationTests {
         String data = "1234567890-=~!@#$%^&*()_+";
         Assert.assertEquals("313233343536373839302d3d7e21402324255e262a28295f2b",
                 textService.encode(textService.decode(data, EncodingType.PLAIN), EncodingType.HEX));
+
+        String tmp = textService.encode(textService.decode(data, EncodingType.PLAIN), EncodingType.BASE32);
+        String tmp2 = textService.encode(textService.decode(tmp, EncodingType.BASE32), EncodingType.BASE64);
+        String result = textService.encode(textService.decode(tmp2, EncodingType.BASE64), EncodingType.HEX);
+        Assert.assertEquals(textService.encode(textService.decode(data, EncodingType.PLAIN), EncodingType.HEX),
+                result);
+    }
+
+    @Test
+    public void anotherStupidTest() {
+        String data = "87ublkj poy f ,liuhfk ;";
+
+        String tmp = textService.encode(textService.decode(data, EncodingType.PLAIN), EncodingType.DEC);
+        String tmp2 = textService.encode(textService.decode(tmp, EncodingType.DEC), EncodingType.OCT);
+        String result = textService.encode(textService.decode(tmp2, EncodingType.OCT), EncodingType.DEC);
+        Assert.assertEquals(tmp, result);
     }
 
     @Test
@@ -104,5 +120,17 @@ public class TextServiceTest extends UniconApplicationTests {
                 textService.encode(textService.hash(
                         textService.decode(data, EncodingType.PLAIN), HashType.MD5),
                         EncodingType.BIN));
+    }
+
+    @Test
+    public void anotherHashTest() {
+        String data = "serdgsrtysrthgbxcv cv r5t";
+        String result = textService.encode(textService.hash(
+                textService.decode(data, EncodingType.PLAIN), HashType.MD5),
+                EncodingType.HEX);
+        String anotheResult = textService.encode(textService.decode(textService.encode(textService.hash(
+                textService.decode(data, EncodingType.PLAIN), HashType.MD5),
+                EncodingType.BASE32), EncodingType.BASE32), EncodingType.HEX);
+        Assert.assertEquals(result, anotheResult);
     }
 }
