@@ -142,9 +142,4 @@ public class TextServiceTest extends UniconApplicationTests {
 
         Assert.assertEquals(resultHex, anotheResultHex);
     }
-
-    @Test
-    public void testTest() {
-        Assert.assertEquals("143", Integer.toOctalString('c'));
-    }
 }
