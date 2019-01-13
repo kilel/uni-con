@@ -2,8 +2,9 @@ package org.github.unicon.conv.date;
 
 import org.github.unicon.TestUtils;
 import org.github.unicon.UniconApplicationTests;
-import org.github.unicon.conv.measure.MeasuredValue;
-import org.github.unicon.conv.measure.impl.DurationUnit;
+import org.github.unicon.model.measure.MeasuredValue;
+import org.github.unicon.model.measure.unit.DurationUnit;
+import org.github.unicon.service.DateService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

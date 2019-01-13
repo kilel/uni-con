@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - include:
+      file: 'table/unit_scale.sql'
+      relativeToChangelogFile: true
+  - include:
+      file: 'data/import_data.xml'
+      relativeToChangelogFile: true
+

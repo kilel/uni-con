@@ -1,0 +1,18 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="load-unit-scales" author="kilel" runOnChange="true">
+        <delete tableName="unit_scale" />
+        <loadData file="classpath:/db/changelog/data/unit_scale.csv"
+                  tableName="unit_scale">
+            <column name="type_id" type="NUMERIC"/>
+            <column name="unit_id" type="NUMERIC"/>
+            <column name="scale" type="NUMERIC"/>
+            <column name="dscr" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,9 +1,11 @@
 package org.github.unicon.web;
 
-import org.github.unicon.conv.measure.MeasureType;
-import org.github.unicon.conv.text.EncodingType;
-import org.github.unicon.conv.text.EscapeType;
-import org.github.unicon.conv.text.HashType;
+import org.github.unicon.model.measure.MeasureType;
+import org.github.unicon.model.text.EncodingType;
+import org.github.unicon.model.text.EscapeType;
+import org.github.unicon.model.text.HashType;
+import org.github.unicon.service.MeasureService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
+
+    private final MeasureService measureService;
+
+    @Autowired
+    public MainController(MeasureService measureService) {
+        this.measureService = measureService;
+    }
 
     @RequestMapping("/")
     public String main(Model model) {
@@ -22,7 +31,7 @@ public class MainController {
     public String convertMeasure(Model model,
                                  @RequestParam("type") MeasureType type) {
         fillCommonModelFields(model);
-        model.addAttribute("units", type.getUnits());
+        model.addAttribute("units", measureService.getUnits(type));
         model.addAttribute("currentType", type);
 
         return "convert/measure";
@@ -31,7 +40,7 @@ public class MainController {
     @RequestMapping("/convert/date")
     public String convertDate(Model model) {
         fillCommonModelFields(model);
-        model.addAttribute("units", MeasureType.DURATION.getUnits());
+        model.addAttribute("units", measureService.getUnits(MeasureType.DURATION));
         return "convert/date";
     }
 

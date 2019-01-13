@@ -1,0 +1,5 @@
+
+unicon.jdbc:
+  url:  jdbc:h2:mem:test
+  user:  root
+  password: toor
