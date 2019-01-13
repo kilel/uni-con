@@ -57,7 +57,7 @@ public class TextService {
     public String encode(byte[] data, EncodingType type) {
         switch (type) {
             case PLAIN:
-                return new String(data);
+                return new String(data, StandardCharsets.UTF_8);
             case BIN:
                 return new BigInteger(1, data).toString(2);
             case OCT:
@@ -83,7 +83,7 @@ public class TextService {
     public byte[] decode(String data, EncodingType type) {
         switch (type) {
             case PLAIN:
-                return data.getBytes();
+                return data.getBytes(StandardCharsets.UTF_8);
             case BIN:
                 return BigIntegers.asUnsignedByteArray(new BigInteger(data, 2));
             case OCT:
