@@ -13,7 +13,11 @@ import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.function.IntFunction;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 @Service
 public class TextService {
@@ -55,8 +59,12 @@ public class TextService {
                 return new BigInteger(1, data).toString(2);
             case OCT:
                 return new BigInteger(1, data).toString(8);
+            case OCT_PER_BYTE:
+                return encodePerByte(data, Integer::toOctalString);
             case DEC:
                 return new BigInteger(1, data).toString(10);
+            case DEC_PER_BYTE:
+                return encodePerByte(data, String::valueOf);
             case HEX:
                 return Hex.encodeHexString(data);
             case BASE32:
@@ -68,6 +76,7 @@ public class TextService {
         }
     }
 
+
     public byte[] decode(String data, EncodingType type) {
         switch (type) {
             case PLAIN:
@@ -76,8 +85,12 @@ public class TextService {
                 return BigIntegers.asUnsignedByteArray(new BigInteger(data, 2));
             case OCT:
                 return BigIntegers.asUnsignedByteArray(new BigInteger(data, 8));
+            case OCT_PER_BYTE:
+                return decodePerByte(data, x -> Integer.parseInt(x, 8));
             case DEC:
                 return BigIntegers.asUnsignedByteArray(new BigInteger(data, 10));
+            case DEC_PER_BYTE:
+                return decodePerByte(data, Integer::parseInt);
             case HEX:
                 try {
                     return Hex.decodeHex(data);
@@ -90,6 +103,54 @@ public class TextService {
                 return Base64.getDecoder().decode(data);
             default:
                 throw new IllegalArgumentException("Unknown encoding type: " + type.getCode());
+        }
+    }
+
+
+    private String encodePerByte(byte[] data, IntFunction<String> encoder) {
+        int[] intData = toIntArray(data);
+        return Arrays.stream(intData)
+                .mapToObj(encoder)
+                .collect(Collectors.joining(" "));
+    }
+
+
+    private byte[] decodePerByte(String data, ToIntFunction<String> decoder) {
+        int[] intData = Arrays.stream(data.split(" "))
+                .mapToInt(decoder)
+                .toArray();
+        return toByteArray(intData);
+    }
+
+    private int[] toIntArray(byte[] data) {
+        int[] result = new int[data.length];
+        for (int i = 0; i < data.length; i++) {
+            result[i] = byteToInt(data[i]);
+        }
+        return result;
+    }
+
+    private byte[] toByteArray(int[] data) {
+        byte[] result = new byte[data.length];
+        for (int i = 0; i < data.length; i++) {
+            result[i] = intToByte(data[i]);
+        }
+        return result;
+    }
+
+    private byte intToByte(int src) {
+        if (src < Byte.MAX_VALUE) {
+            return (byte) src;
+        } else {
+            return (byte) (src - 256);
+        }
+    }
+
+    private int byteToInt(byte src) {
+        if (src >= 0) {
+            return src;
+        } else {
+            return 256 + src;
         }
     }
 
