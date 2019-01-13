@@ -1,0 +1,5 @@
+
+unicon.jdbc:
+  url:  jdbc:h2:file:./support/sampleDb;FILE_LOCK=NO
+  user:  root
+  password: toor

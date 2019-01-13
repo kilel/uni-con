@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.github.unicon.TestUtils;
 import org.github.unicon.UniconApplicationTests;
-import org.github.unicon.web.model.MeasureConvertResponse;
-import org.github.unicon.web.model.ValueResponse;
+import org.github.unicon.web.api.model.MeasureConvertResponse;
+import org.github.unicon.web.api.model.ValueResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.util.MimeTypeUtils;
 
 import java.math.BigDecimal;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 
 public class ConversionControllerTest extends UniconApplicationTests {
