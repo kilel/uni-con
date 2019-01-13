@@ -1,19 +1,23 @@
-package org.github.unicon.service;
+package org.github.unicon.conv.text;
 
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.text.StringEscapeUtils;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.*;
-import org.github.unicon.model.text.EncodingType;
-import org.github.unicon.model.text.EscapeType;
-import org.github.unicon.model.text.HashType;
+import org.bouncycastle.util.BigIntegers;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.function.IntFunction;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 @Service
 public class TextService {
@@ -52,13 +56,17 @@ public class TextService {
             case PLAIN:
                 return new String(data);
             case BIN:
-                return new BigInteger(data).toString(2);
+                return new BigInteger(1, data).toString(2);
             case OCT:
-                return new BigInteger(data).toString(8);
+                return new BigInteger(1, data).toString(8);
+            case OCT_PER_BYTE:
+                return encodePerByte(data, Integer::toOctalString);
             case DEC:
-                return new BigInteger(data).toString(10);
+                return new BigInteger(1, data).toString(10);
+            case DEC_PER_BYTE:
+                return encodePerByte(data, String::valueOf);
             case HEX:
-                return new BigInteger(data).toString(16);
+                return Hex.encodeHexString(data);
             case BASE32:
                 return new Base32().encodeAsString(data);
             case BASE64:
@@ -68,18 +76,27 @@ public class TextService {
         }
     }
 
+
     public byte[] decode(String data, EncodingType type) {
         switch (type) {
             case PLAIN:
                 return data.getBytes();
             case BIN:
-                return new BigInteger(data, 2).toByteArray();
+                return BigIntegers.asUnsignedByteArray(new BigInteger(data, 2));
             case OCT:
-                return new BigInteger(data, 8).toByteArray();
+                return BigIntegers.asUnsignedByteArray(new BigInteger(data, 8));
+            case OCT_PER_BYTE:
+                return decodePerByte(data, x -> Integer.parseInt(x, 8));
             case DEC:
-                return new BigInteger(data, 10).toByteArray();
+                return BigIntegers.asUnsignedByteArray(new BigInteger(data, 10));
+            case DEC_PER_BYTE:
+                return decodePerByte(data, Integer::parseInt);
             case HEX:
-                return new BigInteger(data, 16).toByteArray();
+                try {
+                    return Hex.decodeHex(data);
+                } catch (DecoderException e) {
+                    throw new RuntimeException(e);
+                }
             case BASE32:
                 return new Base32().decode(data);
             case BASE64:
@@ -87,6 +104,62 @@ public class TextService {
             default:
                 throw new IllegalArgumentException("Unknown encoding type: " + type.getCode());
         }
+    }
+
+
+    private String encodePerByte(byte[] data, IntFunction<String> encoder) {
+        int[] intData = toIntArray(data);
+        return Arrays.stream(intData)
+                .mapToObj(encoder)
+                .collect(Collectors.joining(" "));
+    }
+
+
+    private byte[] decodePerByte(String data, ToIntFunction<String> decoder) {
+        int[] intData = Arrays.stream(data.split(" "))
+                .mapToInt(decoder)
+                .toArray();
+        return toByteArray(intData);
+    }
+
+    private int[] toIntArray(byte[] data) {
+        int[] result = new int[data.length];
+        for (int i = 0; i < data.length; i++) {
+            result[i] = byteToInt(data[i]);
+        }
+        return result;
+    }
+
+    private byte[] toByteArray(int[] data) {
+        byte[] result = new byte[data.length];
+        for (int i = 0; i < data.length; i++) {
+            result[i] = intToByte(data[i]);
+        }
+        return result;
+    }
+
+    private byte intToByte(int src) {
+        if (src < Byte.MAX_VALUE) {
+            return (byte) src;
+        } else {
+            return (byte) (src - 256);
+        }
+    }
+
+    private int byteToInt(byte src) {
+        if (src >= 0) {
+            return src;
+        } else {
+            return 256 + src;
+        }
+    }
+
+    public String convert(String data, EncodingType source, EncodingType target) {
+        return encode(decode(data, source), target);
+    }
+
+    public byte[] convert(byte[] data, EncodingType source, EncodingType target) {
+        return decode(encode(data, source), target);
     }
 
     public byte[] hash(byte[] data, HashType type) {
