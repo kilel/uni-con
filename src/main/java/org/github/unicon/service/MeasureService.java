@@ -44,7 +44,7 @@ public class MeasureService {
         final MeasureType measureType = Arrays.stream(MeasureType.values())
             .filter(x -> x.getUnitType() == type)
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Whong measure type: " + type));
+            .orElseThrow(() -> new IllegalArgumentException("Wrong measure type: " + type));
 
         return getConverter(measureType);
     }
