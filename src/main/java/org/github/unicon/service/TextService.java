@@ -1,4 +1,4 @@
-package org.github.unicon.conv.text;
+package org.github.unicon.service;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base32;
@@ -7,6 +7,9 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.*;
 import org.bouncycastle.util.BigIntegers;
+import org.github.unicon.model.text.EncodingType;
+import org.github.unicon.model.text.EscapeType;
+import org.github.unicon.model.text.HashType;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;

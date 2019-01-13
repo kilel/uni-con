@@ -1,12 +1,14 @@
 package org.github.unicon.conv.text;
 
 import org.github.unicon.UniconApplicationTests;
+import org.github.unicon.model.text.EscapeType;
+import org.github.unicon.service.TextService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.github.unicon.conv.text.EncodingType.*;
-import static org.github.unicon.conv.text.HashType.*;
+import static org.github.unicon.model.text.EncodingType.*;
+import static org.github.unicon.model.text.HashType.*;
 
 public class TextServiceTest extends UniconApplicationTests {
     @Autowired
