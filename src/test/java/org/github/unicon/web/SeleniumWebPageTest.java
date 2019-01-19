@@ -164,7 +164,7 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
     }
 
     @Test
-    public void TemperatureTest() throws InterruptedException {
+    public void temperatureTest() throws InterruptedException {
         measureTest("TEMPERATURE", "15", "C", "K", "F",
                 BigDecimal.valueOf(288.15), BigDecimal.valueOf(59));
     }
