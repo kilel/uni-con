@@ -1,9 +1,7 @@
 package org.github.unicon.web;
 
-import com.sun.corba.se.spi.ior.ObjectKey;
 import org.github.unicon.TestUtils;
 import org.github.unicon.UniconApplicationTests;
-import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,8 +48,9 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
 
         Thread.sleep(100);
 
-        Assert.assertEquals("111001101101111011011010110010100100000011101000110010101110011011101000010000001110100011001010111100001110100",
-                targetValue.getAttribute("value"));
+        Assert.assertEquals(
+            "111001101101111011011010110010100100000011101000110010101110011011101000010000001110100011001010111100001110100",
+            targetValue.getAttribute("value"));
 
         // convert backward
         sourceType.selectByVisibleText("hex");
@@ -78,7 +77,7 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
         Thread.sleep(100);
 
         Assert.assertEquals("%7E%21%40",
-                targetValue.getAttribute("value"));
+            targetValue.getAttribute("value"));
 
         // unescape
         driver.findElement(By.id("unescape-button")).click();
@@ -108,7 +107,7 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
         Thread.sleep(100);
 
         Assert.assertEquals("f6340d9534a3b87669c7abc5106370b4",
-                targetValue.getAttribute("value"));
+            targetValue.getAttribute("value"));
     }
 
     @Test
@@ -131,7 +130,7 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
         Thread.sleep(300);
 
         Assert.assertEquals("1.5",
-                durationValue.getAttribute("value"));
+            durationValue.getAttribute("value"));
 
         // calculate date
         WebElement sourceDate2 = driver.findElement(By.id("source-date-2"));
@@ -148,40 +147,46 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
         Thread.sleep(300);
 
         Assert.assertEquals("2019-01-02 12:00:00.000+0300",
-                targetDate2.getAttribute("value"));
+            targetDate2.getAttribute("value"));
     }
 
     @Test
     public void lengthTest() throws InterruptedException {
         measureTest("LENGTH", "456", "meter", "kilometer", "mile",
-                BigDecimal.valueOf(0.456), BigDecimal.valueOf(0.28334526));
+            BigDecimal.valueOf(0.456), BigDecimal.valueOf(0.28334526));
     }
 
     @Test
     public void pressureTest() throws InterruptedException {
         measureTest("PRESSURE", "150", "pascal", "bar", "mmhg",
-                BigDecimal.valueOf(0.0015), BigDecimal.valueOf(1.12509236));
+            BigDecimal.valueOf(0.0015), BigDecimal.valueOf(1.12509236));
     }
 
     @Test
     public void temperatureTest() throws InterruptedException {
         measureTest("TEMPERATURE", "15", "C", "K", "F",
-                BigDecimal.valueOf(288.15), BigDecimal.valueOf(59));
+            BigDecimal.valueOf(288.15), BigDecimal.valueOf(59));
     }
 
     @Test
     public void weightTest() throws InterruptedException {
         measureTest("WEIGHT", "150", "gram", "kilogram", "centner",
-                BigDecimal.valueOf(0.15), BigDecimal.valueOf(0.0015));
+            BigDecimal.valueOf(0.15), BigDecimal.valueOf(0.0015));
     }
 
     @Test
     public void durationTest() throws InterruptedException {
         measureTest("DURATION", "1500", "millisecond", "second", "microsecond",
-                BigDecimal.valueOf(1.5), BigDecimal.valueOf(1500000));
+            BigDecimal.valueOf(1.5), BigDecimal.valueOf(1500000));
     }
 
-    private void measureTest(String type, String sValue, String sUnit, String tUnit, String backSourceUnit, BigDecimal expected1, BigDecimal expected2) throws InterruptedException {
+    private void measureTest(String type,
+                             String sValue,
+                             String sUnit,
+                             String tUnit,
+                             String backSourceUnit,
+                             BigDecimal expected1,
+                             BigDecimal expected2) throws InterruptedException {
         driver.get("http://localhost:" + port + "/convert/measure?type=" + type);
 
         WebElement sourceValue = driver.findElement(By.id("source-value"));
@@ -199,8 +204,8 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
 
         BigDecimal result = new BigDecimal(targetValue.getAttribute("value"));
         TestUtils.assertNotDifferMuch(expected1,
-                result,
-                DELTA);
+            result,
+            DELTA);
 
         // convert backward
         sourceUnit.selectByVisibleText(backSourceUnit);
@@ -210,8 +215,8 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
 
         BigDecimal result2 = new BigDecimal(sourceValue.getAttribute("value"));
         TestUtils.assertNotDifferMuch(expected2,
-                result2,
-                DELTA);
+            result2,
+            DELTA);
     }
 
     @After
