@@ -40,5 +40,7 @@ dependencies {
     compile 'com.zaxxer:HikariCP:3.3.0'
     runtimeOnly 'com.h2database:h2'
 
+    compile 'org.seleniumhq.selenium:selenium-java:3.141.59'
+
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
