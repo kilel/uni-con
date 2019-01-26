@@ -1,5 +1,6 @@
 package org.github.unicon.web;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.github.unicon.TestUtils;
 import org.github.unicon.UniconApplicationTests;
 import org.junit.After;
@@ -27,7 +28,13 @@ public class SeleniumWebPageTest extends UniconApplicationTests {
 
     @Before
     public void init() {
-        System.setProperty("webdriver.chrome.driver", "C:/Projects/chromedriver.exe");
+        if (SystemUtils.IS_OS_WINDOWS) {
+            System.setProperty("webdriver.chrome.driver", "selenium/win32/chromedriver.exe");
+        } else if (SystemUtils.IS_OS_LINUX) {
+            System.setProperty("webdriver.chrome.driver", "selenium/linux64/chromedriver");
+        } else if (SystemUtils.IS_OS_MAC) {
+            System.setProperty("webdriver.chrome.driver", "selenium/mac63/chromedriver");
+        }
         driver = new ChromeDriver();
     }
 
