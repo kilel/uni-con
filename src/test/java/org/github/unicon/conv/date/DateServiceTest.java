@@ -6,6 +6,7 @@ import org.github.unicon.model.measure.MeasuredValue;
 import org.github.unicon.model.measure.unit.DurationUnit;
 import org.github.unicon.service.DateService;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -68,6 +69,49 @@ public class DateServiceTest extends UniconApplicationTests {
 
         assertDateInterval(sourceDate, targetDate, DurationUnit.SECOND, 61.5);
         assertDateInterval(sourceDate, targetDate, DurationUnit.NANOSECOND, new BigDecimal("61500000000"));
+    }
+
+    @Test
+    public void negativeIntervalTest() throws ParseException {
+        String sourceDate = "2019-01-31 12:01:01.000+0300";
+        String targetDate = "2019-01-31 12:00:00.500+0300";
+
+        assertDateInterval(sourceDate, targetDate, DurationUnit.SECOND, -60.5);
+        assertDateInterval(sourceDate, targetDate, DurationUnit.NANOSECOND, new BigDecimal("-60500000000"));
+    }
+
+    @Test
+    public void zeroIntervalTest() throws ParseException {
+        String sourceDate = "2019-01-31 12:00:00.500+0300";
+        String targetDate = "2019-01-31 12:00:00.500+0300";
+
+        assertDateInterval(sourceDate, targetDate, DurationUnit.SECOND, 0);
+        assertDateInterval(sourceDate, targetDate, DurationUnit.NANOSECOND, 0);
+    }
+
+    @Test
+    public void bigTargetIntervalTest() throws ParseException {
+        String sourceDate = "2019-01-31 12:00:00.500+0300";
+        String targetDate = "3019-01-31 12:00:00.500+0300";
+
+        assertDateInterval(sourceDate, targetDate, DurationUnit.DAY, 365242);
+    }
+
+    @Test
+    @Ignore ("fix later")
+    public void littleSourceIntervalTest() throws ParseException {
+        String sourceDate = "1019-01-31 12:00:00.500+0300";
+        String targetDate = "2019-01-31 12:00:00.500+0300";
+
+        assertDateInterval(sourceDate, targetDate, DurationUnit.DAY, 365243);
+    }
+
+    @Test
+    public void goodOldDaysIntervalTest() throws ParseException {
+        String sourceDate = "1019-01-31 12:00:00.500+0300";
+        String targetDate = "1019-03-31 12:00:00.500+0300";
+
+        assertDateInterval(sourceDate, targetDate, DurationUnit.DAY, 59);
     }
 
     @Test

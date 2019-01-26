@@ -106,6 +106,14 @@ public class TextServiceTest extends UniconApplicationTests {
     }
 
     @Test
+    public void negativeEncodeTest() {
+        String data = "1100101011100100111001001101111011100103";
+        String result = "error";
+
+        Assert.assertEquals(textService.convert(data, BIN, PLAIN), result);
+    }
+
+    @Test
     public void simpleHashTest() {
         String data = "serdgsrtysrthgbxcv cv r5t";
         Assert.assertEquals("f6340d9534a3b87669c7abc5106370b4",
