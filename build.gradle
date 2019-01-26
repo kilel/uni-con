@@ -46,7 +46,4 @@ dependencies {
     compile 'org.seleniumhq.selenium:selenium-java:3.141.59'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testRuntime files('selenium/*')
 }
-
-
