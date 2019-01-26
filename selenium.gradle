@@ -17,7 +17,6 @@ for (driver in drivers) {
         while (zipEntry != null) {
             def path = unzipPath + "/$driver/" + zipEntry.name
 
-
             def targetPath = new File(path)
             if (zipEntry.isDirectory()) {
                 println("Creating directory $targetPath")
