@@ -1,0 +1,41 @@
+import java.util.zip.ZipInputStream
+
+def chromeDriverVersion = '2.45'
+
+def driverBaseUrl = "https://chromedriver.storage.googleapis.com/$chromeDriverVersion/"
+def drivers = ['win32', 'mac64', 'linux64']
+def unzipPath = 'selenium'
+
+for (driver in drivers) {
+    def url = new URL(driverBaseUrl + "chromedriver_${driver}.zip")
+
+    url.withInputStream { stream ->
+        def zipStream = new ZipInputStream(stream)
+        def zipEntry = zipStream.getNextEntry()
+        def buffer = new byte[4096]
+
+        while (zipEntry != null) {
+            def path = unzipPath + "/$driver/" + zipEntry.name
+
+            def targetPath = new File(path)
+            if (zipEntry.isDirectory()) {
+                println("Creating directory $targetPath")
+                targetPath.mkdirs()
+            } else {
+                def targetDir = targetPath.getParentFile()
+                targetDir.mkdirs()
+
+                println("Extracting ${zipEntry.name} to ${targetDir.absolutePath}")
+                def len = 0
+                targetPath.withOutputStream { outStream ->
+                    while ((len = zipStream.read(buffer, 0, buffer.length)) > 0) {
+                        outStream.write(buffer, 0, len)
+                    }
+                }
+            }
+
+            zipEntry = zipStream.getNextEntry()
+        }
+    }
+
+}

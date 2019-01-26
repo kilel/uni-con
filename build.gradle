@@ -10,6 +10,9 @@ buildscript {
     }
 }
 
+// download and unpack drivers
+apply from: 'selenium.gradle'
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
@@ -39,6 +42,8 @@ dependencies {
     compile 'org.liquibase:liquibase-core'
     compile 'com.zaxxer:HikariCP:3.3.0'
     runtimeOnly 'com.h2database:h2'
+
+    compile 'org.seleniumhq.selenium:selenium-java:3.141.59'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
