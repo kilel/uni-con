@@ -108,28 +108,21 @@ public class TextServiceTest extends UniconApplicationTests {
 
     @Test (expected = NumberFormatException.class)
     public void binNegativeDecodeTest() {
-        String data = "1100310101110010011100100110111101110010";
-
-        textService.decode(data, BIN);
+        textService.decode("1100310101110010011100100110111101110010", BIN);
     }
 
     @Test (expected = NumberFormatException.class)
     public void octNegativeDecodeTest() {
-        String data = "6856234467562";
-
-        textService.decode(data, OCT);
+        textService.decode("6856234467562", OCT);
     }
 
     @Test (expected = NumberFormatException.class)
     public void decNegativeDecodeTest() {
-        String data = "4a5711799154";
-
-        textService.decode(data, DEC);
+        textService.decode("4a5711799154", DEC);
     }
 
     @Test
-    public void hexNegativeTest() {
-
+    public void hexUpperCaseTest() {
         assertArrayEquals(
                 textService.decode("6572726f72", HEX),
                 textService.decode("6572726F72", HEX)
@@ -138,107 +131,81 @@ public class TextServiceTest extends UniconApplicationTests {
 
     @Test (expected = RuntimeException.class)
     public void hexAnotherNegativeTest() {
-        String data = "6572726r72";
-
-        textService.decode(data, HEX);
+        textService.decode("6572726r72", HEX);
     }
 
     @Test (expected = NumberFormatException.class)
     public void octPerByteIncorrectNumberTest() {
-        String data = "148 162 162 157 162";
-
-        textService.decode(data, OCT_PER_BYTE);
+        textService.decode("148 162 162 157 162", OCT_PER_BYTE);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void octPerByteNoSpaceTest() {
-        String data = "145162 162 157 162";
-
-        textService.decode(data, OCT_PER_BYTE);
+        textService.decode("145162 162 157 162", OCT_PER_BYTE);
     }
 
     @Test (expected = NumberFormatException.class)
     public void octPerByteTwoSpacesTest() {
-        String data = "145  162 162 157 162";
-
-        textService.decode(data, OCT_PER_BYTE);
+        textService.decode("145  162 162 157 162", OCT_PER_BYTE);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void octPerByteNegativeTest() {
-        String data = "-145 162 162 157 162";
-
-        textService.decode(data, OCT_PER_BYTE);
+        textService.decode("-145 162 162 157 162", OCT_PER_BYTE);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void octPerByteBigNumberTest() {
-        String data = "445 162 162 157 162";
-
-        textService.decode(data, OCT_PER_BYTE);
+        textService.decode("445 162 162 157 162", OCT_PER_BYTE);
     }
 
     @Test (expected = NumberFormatException.class)
     public void decPerByteIncorrectNumberTest() {
-        String data = "1a1 114 114 111 114";
-
-        textService.decode(data, DEC_PER_BYTE);
+        textService.decode("1a1 114 114 111 114", DEC_PER_BYTE);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void decPerByteNoSpaceTest() {
-        String data = "101114 114 111 114";
-
-        textService.decode(data, DEC_PER_BYTE);
+        textService.decode("101114 114 111 114", DEC_PER_BYTE);
     }
 
     @Test (expected = NumberFormatException.class)
     public void decPerByteTwoSpacesTest() {
-        String data = "101  114 114 111 114";
-
-        textService.decode(data, DEC_PER_BYTE);
+        textService.decode("101  114 114 111 114", DEC_PER_BYTE);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void decPerByteNegativeTest() {
-        String data = "-101 114 114 111 114";
-
-        textService.decode(data, DEC_PER_BYTE);
+        textService.decode("-101 114 114 111 114", DEC_PER_BYTE);
     }
 
-    @Test
+    @Test (expected = IllegalArgumentException.class)
     public void decPerByteBigNumberTest() {
-        String data = "301 114 114 111 114";
-
-        textService.decode(data, DEC_PER_BYTE);
+        textService.decode("301 114 114 111 114", DEC_PER_BYTE);
     }
 
     @Test
     public void base32IncorrectSymbolTest() {
-        String data = "MVZHE03SOM======";
-
-        textService.decode(data, BASE32);
+        assertEquals("errors", textService.convert("mVZHE33SOM======", BASE32, PLAIN));
     }
 
     @Test
     public void base32WrongPaddingTest() {
-        String data = "MVZHE33SOM=====";
-
-        textService.decode(data, BASE32);
+        assertArrayEquals(
+                textService.decode("MVZHE33SOM======", BASE32),
+                textService.decode("MVZHE33SOM========", BASE32));
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void base64IncorrectSymbolTest() {
-        String data = "ZXJ-b3I=";
-
-        textService.decode(data, BASE64);
+        textService.decode("ZXJ-b3I=", BASE64);
     }
 
     @Test
     public void base64WrongPaddingTest() {
-        String data = "ZXJyb3I";
-
-        assertEquals("error", textService.convert(data, BASE64, PLAIN));
+        assertArrayEquals(
+                textService.decode("ZXJyb3I=", BASE64),
+                textService.decode("ZXJyb3I", BASE64));
     }
 
     @Test

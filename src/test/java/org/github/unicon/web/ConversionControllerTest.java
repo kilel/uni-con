@@ -46,7 +46,7 @@ public class ConversionControllerTest extends UniconApplicationTests {
     }
 
     @Test
-    public void wrongValueMeasureTest() throws Exception {
+    public void wrongUnitMeasureTest() throws Exception {
         BaseResponse response = mapper.readValue(
                 mockMvc.perform(
                         get("/api/convert/measure")
@@ -62,6 +62,63 @@ public class ConversionControllerTest extends UniconApplicationTests {
 
         Assert.assertEquals(ResultStatus.FAIL, response.getStatus());
         Assert.assertTrue(response.getMessage().contains("Unknown unit [meters]"));
+    }
+
+    @Test
+    public void wrongValueMeasureTest() throws Exception {
+        BaseResponse response = mapper.readValue(
+                mockMvc.perform(
+                        get("/api/convert/measure")
+                                .param("type", "LENGTH")
+                                .param("source", "meter")
+                                .param("target", "kilometer")
+                                .param("value", "456,8")
+                                .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
+                        .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                        .andReturn().getResponse()
+                        .getContentAsString(),
+                BaseResponse.class);
+
+        Assert.assertEquals(ResultStatus.FAIL, response.getStatus());
+        Assert.assertTrue(response.getMessage().contains("Failed to convert value"));
+    }
+
+    @Test
+    public void wrongTypeMeasureTest() throws Exception {
+        BaseResponse response = mapper.readValue(
+                mockMvc.perform(
+                        get("/api/convert/measure")
+                                .param("type", "TYPE")
+                                .param("source", "meter")
+                                .param("target", "kilometer")
+                                .param("value", "456")
+                                .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
+                        .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                        .andReturn().getResponse()
+                        .getContentAsString(),
+                BaseResponse.class);
+
+        Assert.assertEquals(ResultStatus.FAIL, response.getStatus());
+        Assert.assertTrue(response.getMessage().contains("No enum constant org.github.unicon.model.measure.MeasureType.TYPE"));
+    }
+
+    @Test
+    public void wrongUnitToTypeMeasureTest() throws Exception {
+        BaseResponse response = mapper.readValue(
+                mockMvc.perform(
+                        get("/api/convert/measure")
+                                .param("type", "LENGTH")
+                                .param("source", "second")
+                                .param("target", "kilometer")
+                                .param("value", "456")
+                                .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
+                        .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                        .andReturn().getResponse()
+                        .getContentAsString(),
+                BaseResponse.class);
+
+        Assert.assertEquals(ResultStatus.FAIL, response.getStatus());
+        Assert.assertTrue(response.getMessage().contains("Unknown unit [second] for measure"));
     }
 
     @Test
@@ -119,7 +176,7 @@ public class ConversionControllerTest extends UniconApplicationTests {
     }
 
     @Test
-    public void wrongValueIntervalTest() throws Exception {
+    public void wrongUnitIntervalTest() throws Exception {
         ValueResponse<BigDecimal> response = mapper.readValue(
                 mockMvc.perform(
                         get("/api/convert/date/toInterval")
@@ -134,6 +191,24 @@ public class ConversionControllerTest extends UniconApplicationTests {
 
         Assert.assertEquals(ResultStatus.FAIL, response.getStatus());
         Assert.assertTrue(response.getMessage().contains("Unknown unit [days]"));
+    }
+
+    @Test
+    public void wrongTargetIntervalTest() throws Exception {
+        ValueResponse<BigDecimal> response = mapper.readValue(
+                mockMvc.perform(
+                        get("/api/convert/date/toInterval")
+                                .param("source", "2019-01-01 00:00:00.000+0300")
+                                .param("target", "2019-01-02 12:00:00.000")
+                                .param("durationUnit", "day")
+                                .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
+                        .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                        .andReturn().getResponse()
+                        .getContentAsString(),
+                new TypeReference<ValueResponse<BigDecimal>>(){});
+
+        Assert.assertEquals(ResultStatus.FAIL, response.getStatus());
+        Assert.assertTrue(response.getMessage().contains("Unparseable date: \\\"2019-01-02 12:00:00.000\\\""));
     }
 
     @Test
@@ -189,7 +264,7 @@ public class ConversionControllerTest extends UniconApplicationTests {
     }
 
     @Test
-    public void wrongValueDateTest() throws Exception {
+    public void wrongUnitDateTest() throws Exception {
         ValueResponse<BigDecimal> response = mapper.readValue(
                 mockMvc.perform(
                         get("/api/convert/date/toDate")
@@ -258,12 +333,12 @@ public class ConversionControllerTest extends UniconApplicationTests {
     }
 
     @Test
-    public void wrongValueEscapeTest() throws Exception {
+    public void wrongTypeEscapeTest() throws Exception {
         ValueResponse<BigDecimal> response = mapper.readValue(
                 mockMvc.perform(
                         get("/api/convert/text/escape")
                                 .param("source", "text_dont_escape")
-                                .param("type", "URI")
+                                .param("type", "U")
                                 .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
                         .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                         .andReturn().getResponse()
@@ -324,12 +399,12 @@ public class ConversionControllerTest extends UniconApplicationTests {
     }
 
     @Test
-    public void wrongValueUnescapeTest() throws Exception {
+    public void wrongTypeUnescapeTest() throws Exception {
         ValueResponse<BigDecimal> response = mapper.readValue(
                 mockMvc.perform(
                         get("/api/convert/text/unescape")
                                 .param("source", "text_dont_escape")
-                                .param("type", "URI")
+                                .param("type", "U")
                                 .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
                         .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                         .andReturn().getResponse()
