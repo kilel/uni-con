@@ -74,7 +74,7 @@ public class ConversionControllerTest extends UniconApplicationTests {
                                 .param("target", "kilometer")
                                 .param("value", "456,8")
                                 .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
-                        .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                        .andExpect(MockMvcResultMatchers.status().is5xxServerError())
                         .andReturn().getResponse()
                         .getContentAsString(),
                 BaseResponse.class);
@@ -93,7 +93,7 @@ public class ConversionControllerTest extends UniconApplicationTests {
                                 .param("target", "kilometer")
                                 .param("value", "456")
                                 .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
-                        .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                        .andExpect(MockMvcResultMatchers.status().is5xxServerError())
                         .andReturn().getResponse()
                         .getContentAsString(),
                 BaseResponse.class);
@@ -202,13 +202,13 @@ public class ConversionControllerTest extends UniconApplicationTests {
                                 .param("target", "2019-01-02 12:00:00.000")
                                 .param("durationUnit", "day")
                                 .accept(MimeTypeUtils.APPLICATION_JSON_VALUE))
-                        .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                        .andExpect(MockMvcResultMatchers.status().is5xxServerError())
                         .andReturn().getResponse()
                         .getContentAsString(),
                 new TypeReference<ValueResponse<BigDecimal>>(){});
 
         Assert.assertEquals(ResultStatus.FAIL, response.getStatus());
-        Assert.assertTrue(response.getMessage().contains("Unparseable date: \\\"2019-01-02 12:00:00.000\\\""));
+        Assert.assertTrue(response.getMessage().contains("Unparseable date: ") && response.getMessage().contains("2019-01-02 12:00:00.000"));
     }
 
     @Test
