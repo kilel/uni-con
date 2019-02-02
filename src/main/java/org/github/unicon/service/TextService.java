@@ -142,6 +142,10 @@ public class TextService {
     }
 
     private byte intToByte(int src) {
+        if (src < 0 || src > (2 * Byte.MAX_VALUE + 1)) {
+            throw new IllegalArgumentException("Invalid value to convert to byte: " + src);
+        }
+
         if (src < Byte.MAX_VALUE) {
             return (byte) src;
         } else {
