@@ -34,7 +34,7 @@
         </div>
         <div class="form-group col pr-0">
             <label for="duration-value">Interval</label>
-            <input id="duration-value" class="form-control" type="text"/>
+            <input id="duration-value" class="form-control" type="text" readonly="true"/>
         </div>
     </div>
     <div class="form-group row mx-2 mx-sm-0">
@@ -65,7 +65,7 @@
     </div>
     <div class="form-group row mx-2 mx-sm-0">
         <label for="target-date-2">Target date</label>
-        <input id="target-date-2" class="form-control" type="text"/>
+        <input id="target-date-2" class="form-control" type="text" readonly="true"/>
     </div>
     <div class="form-group row mx-2 mx-sm-0">
         <div class="col-3"></div>
@@ -97,6 +97,7 @@
                     'json'
                 ).fail(function (data) {
                     var result = data.responseJSON.message;
+                    $("#duration-value").val("");
                     alert('Failed to get response! ' + result);
                 });
             });
@@ -120,6 +121,7 @@
                     'json'
                 ).fail(function (data) {
                     var result = data.responseJSON.message;
+                    $("#target-date-2").val("");
                     alert('Failed to get response! ' + result);
                 });
             });
