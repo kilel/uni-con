@@ -2,7 +2,7 @@
 
 Makes it easy to convert any data
 
-#### Features (TBD)
+#### Features
 
 1. convert decimals:
     - length
@@ -18,6 +18,3 @@ Makes it easy to convert any data
     - encode/decode (hex, base64, etc)
     - hash (md5, sha-1, etc)
     - espace/unescape (html, url, etc)
-4. simple authentication
-5. personal history and preferences
-6. popular conversions (personal and global)
