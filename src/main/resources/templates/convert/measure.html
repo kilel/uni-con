@@ -75,7 +75,11 @@
                     $("#" + targetKey + "-value").val(result);
                 },
                 'json'
-            );
+            ).fail(function (data) {
+                var result = data.responseJSON.message;
+                $("#" + targetKey + "-value").val("");
+                alert('Failed to get response! ' + result);
+            });
         }
     </script>
 </div>
